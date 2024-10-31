@@ -8,11 +8,13 @@ async function insertar_usuario(dato) {
 async function obtener_usuario(dato) {
      let filter = {}
 
+     let resultado;
      if (dato.username) {
         filter = { username: dato.username }
-     }
-     
-     const resultado = await model.findOne( filter )
+         resultado = await model.findOne( filter )
+     } else {
+        resultado = await model.find( filter )
+     }     
      return resultado
 }
 
