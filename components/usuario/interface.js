@@ -9,6 +9,7 @@ function authenticateToken(req, res, next) {
     if (!token) return res.status(403).json({ message: 'No token provisto.' });
 
     jwt.verify(token, config.jwtSecret, (err, user) => {
+        console.log("authenticateToken-error", err)
         if (err) return res.status(401).json({ message: 'Token inválido' });
         req.user = user;
         next();

@@ -24,13 +24,15 @@ async function login(data) {
 
     try {    
         const { username, password } = data;        
-        const user = await storage.obtener({ username });        
+        const users = await storage.obtener({ username });        
+        const user = (Array.isArray(users) && users.length > 0 ) ? users[0] : undefined
+
         
         if (!user) {
             throw new Error('Usuario no encontrado');
         }        
         
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = bcrypt.compare(password, user.password);
 
         if (!isMatch) {
             throw new Error('Contraseña incorrecta');
