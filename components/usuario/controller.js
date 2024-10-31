@@ -20,19 +20,30 @@ async function register(data) {
 }
 
 async function login(data) {
-    const { username, password } = data;
-    const user = await storage.obtener({ username });
-    if (!user) {
-        throw new Error('Usuario no encontrado');
-    }
+    
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-        throw new Error('Contraseña incorrecta');
-    }
+    try {    
+        const { username, password } = data;        
+        const user = await storage.obtener({ username });        
+        
+        if (!user) {
+            throw new Error('Usuario no encontrado');
+        }        
+        
+        const isMatch = await bcrypt.compare(password, user.password);
 
-    const token = jwt.sign({ id: user._id, role: user.role },  config.jwtSecret , { expiresIn: config.jwtExpiresIn });
-    return { token };
+        if (!isMatch) {
+            throw new Error('Contraseña incorrecta');
+        }                
+        const token = jwt.sign({ id: user._id, role: user.role },  config.jwtSecret , { expiresIn: config.jwtExpiresIn });        
+        return {token};
+        
+    } catch (err) {
+        console.log("controller::login-err", err)
+        throw err;
+    }
+    
+    
 }
 
 module.exports = {

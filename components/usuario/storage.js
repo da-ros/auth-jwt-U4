@@ -12,7 +12,7 @@ async function obtener_usuario(dato) {
         filter = { username: dato.username }
      }
      
-     const resultado = await model.find( filter )
+     const resultado = await model.findOne( filter )
      return resultado
 }
 
